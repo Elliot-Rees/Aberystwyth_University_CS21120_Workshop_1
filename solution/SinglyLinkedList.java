@@ -8,7 +8,10 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * @author Elliot Rees
+ * Implementation of a Singly Linked List
+ * Keeps a head pointer (start of the list), a tail pointer (end of the
+ * list, so addLast is O(1)), and a running size count.
+ * @author Elliot Rees & Luca Taylor
  * @version 1.0
  */
 
@@ -44,7 +47,7 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public E getLast() throws NoSuchElementException {
-        if (isEmpty()) {
+        if (tail == null) {
             throw new NoSuchElementException("List is empty");
         }
         return tail.getElement();

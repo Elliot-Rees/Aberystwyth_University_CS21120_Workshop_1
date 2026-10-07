@@ -2,13 +2,20 @@ package solution;
 
 import interfaces.ListWithCycle;
 
-public class SinglyLinkedListWithCycle <E> extends SinglyLinkedList<E> implements ListWithCycle<E> {
+/**
+ * Implementation of a Singly Linked list with cycle
+ * @author Elliot Rees & Luca Taylor
+ * @version 1.0
+ */
 
-    // Links tail back to the head creating one loop
+public class SinglyLinkedListWithCycle<E> extends SinglyLinkedList<E> implements ListWithCycle<E> {
+
+
+// Links the tail back to the head creating a loop
     @Override
     public void addCycle() {
-        if(isEmpty()) {
-            throw new IllegalArgumentException("List is Empty");
+        if (isEmpty()) {
+            throw new IllegalArgumentException("Cannot add a cycle to an empty list");
         }
         tail.setNext(head);
         tail = null;
@@ -16,38 +23,42 @@ public class SinglyLinkedListWithCycle <E> extends SinglyLinkedList<E> implement
 
     @Override
     public void addCycle(int i, int j) throws IllegalArgumentException {
-        if (i < 0 || j < 0 || i >= size || j >= size || j < i) {
-            throw new IllegalArgumentException("Invalid indices for cycle: i=" + i + ", j=" +j);
+        // Validate indices: both must be within bounds
+        if (i < 0 || j < 0 || i >= size || j >= size || j <= i) {
+            throw new IllegalArgumentException("Invalid indices for cycle: i=" + i + ", j=" + j);
         }
+
         // Walk from head to find the node at position i
         Node<E> nodeI = head;
-        for (int k = 0; k < i; k++){
+        for (int k = 0; k < i; k++) {
             nodeI = nodeI.getNext();
         }
+
         // Walk from head to find the node at position j
         Node<E> nodeJ = head;
         for (int k = 0; k < j; k++) {
             nodeJ = nodeJ.getNext();
         }
-
         nodeJ.setNext(nodeI);
-
         tail = null;
+        size = j + 1;
     }
 
     @Override
-    public boolean containsCycle() {
+    public boolean containsCycle() { // Floyd's cycle detection algorithm
         if (isEmpty()) {
             return false;
         }
+
         Node<E> slow = head;
         Node<E> fast = head;
-        // Stop if "fast" runs off the end (means there's no cycle)
+
+        // Stop if "fast" runs off the end (No cycle)
         while (fast != null && fast.getNext() != null) {
-            slow = slow.getNext();          // One step
-            fast = fast.getNext().getNext(); // Two steps
+            slow = slow.getNext();          // one step
+            fast = fast.getNext().getNext(); // two steps
             if (slow == fast) {
-                // Pointers met,  must be going around a loop
+                // Pointers met so they must be a loop
                 return true;
             }
         }

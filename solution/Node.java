@@ -1,12 +1,11 @@
 package solution;
 
 /**
- * A single node within the linked list
  * Each node holds one piece of data (element)
  * and a reference to the next node in the chain.
  * The last node's next is always null.
  *
- * @author Elliot Rees
+ * @author Elliot Rees & Luca Taylor
  * @version 1.0
  */
 public class Node<E> {
